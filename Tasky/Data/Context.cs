@@ -12,6 +12,7 @@ public class Context : DbContext
 
     public DbSet<Category> Category { get; set; }
     public DbSet<TaskList> TaskList { get; set; }
+    public DbSet<Item> Item { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

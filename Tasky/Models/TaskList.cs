@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tasky.Models
 {
@@ -6,6 +7,8 @@ namespace Tasky.Models
     public class TaskList
     {
         [Column("id")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column("categoryId")]
@@ -19,6 +22,7 @@ namespace Tasky.Models
         [Column("checked")]
         public bool Checked { get; set; }
 
+        [ForeignKey("taskListId")]
         public List<Item> Items { get; set; } = new();
     }
 }

@@ -2,11 +2,14 @@
 
 namespace Tasky.Controllers
 {
-    public class ListController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class TaskListController : ControllerBase
     {
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            return View();
+            return Ok();
         }
 
         [HttpPost]
