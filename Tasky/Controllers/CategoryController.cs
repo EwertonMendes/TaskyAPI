@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tasky.Data;
 using Tasky.Dtos;
+using Tasky.Interfaces;
 using Tasky.Models;
 
 namespace Tasky.Controllers
@@ -10,22 +10,23 @@ namespace Tasky.Controllers
     [Route("api/v1/[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
-        public readonly Context _context;
-        public CategoryController(Context context)
+        public readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(_context.Category.ToList());
+            var allCategories = _categoryRepository.GetAll().ToList();
+            return Ok(allCategories);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = _context.Category.FirstOrDefault(o => o.Id == id);
+            var category = _categoryRepository.GetById(id);
 
             if(category == null)
             {
@@ -38,16 +39,9 @@ namespace Tasky.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryDto dto)
         {
-            var newCategory = new Category
-            {
-                Name = dto.Name,
-                CreatedDate = dto.CreatedDate,
-            };
-
             try
             {
-                var result = _context.Category.Add(newCategory);
-                _context.SaveChanges();
+                _categoryRepository.AddNewCategory(dto);
 
                 return Ok("Created");
             }
@@ -62,34 +56,23 @@ namespace Tasky.Controllers
         public async Task<IActionResult> Update([FromBody] CategoryDto dto)
         {
 
-            var category = _context.Category.FirstOrDefault(category => category.Id == dto.Id);
-
-            if (category == null)
+            try
             {
-                return NotFound();
+                _categoryRepository.UpdateCategory(dto);
+                return Ok("Updated");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            category.Name = dto.Name;
-            category.CreatedDate = dto.CreatedDate;
             
-            _context.Category.Update(category);
-            _context.SaveChanges();
-
-            return Ok("Updated");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var category = _context.Category.FirstOrDefault(o => o.Id == id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Remove(category);
-            _context.SaveChanges();
+            _categoryRepository.RemoveCategory(id);
 
             return Ok("Removed");
         }
