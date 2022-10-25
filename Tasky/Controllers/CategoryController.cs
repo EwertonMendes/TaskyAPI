@@ -72,9 +72,17 @@ namespace Tasky.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            _categoryRepository.RemoveCategory(id);
+            try
+            {
+                _categoryRepository.RemoveCategory(id);
 
-            return Ok("Removed");
+                return Ok("Removed");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }
