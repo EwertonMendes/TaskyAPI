@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tasky.Dtos
+namespace Tasky.Dtos.Response
 {
-    public class CategoryDto
+    public class CategoryResponseDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

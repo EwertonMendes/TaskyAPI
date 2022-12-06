@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tasky.Dtos;
+using Tasky.Dtos.Request;
+using Tasky.Dtos.Response;
 using Tasky.Models;
 
 namespace Tasky.Interfaces;
 
 public interface ICategoryRepository : IGenericRepository<Category>
 {
-    void AddNewCategory(CategoryDto categoryDto);
-    void UpdateCategory(CategoryDto categoryDto);
-    void RemoveCategory(int id);
+    Category AddNewCategory(CategoryRequestDto categoryDto);
+    Category UpdateCategory(CategoryRequestDto categoryDto, string id);
+    bool RemoveCategory(int id);
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasky.Data;
-using Tasky.Dtos;
+using Tasky.Dtos.Request;
+using Tasky.Dtos.Response;
 using Tasky.Interfaces;
 using Tasky.Models;
 
@@ -10,63 +11,60 @@ namespace Tasky.Controllers
     [Route("api/v1/[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
-        public readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        public readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryRepository)
         {
-            _categoryRepository = categoryRepository;
+            _categoryService = categoryRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var allCategories = _categoryRepository.GetAll().ToList();
+            var allCategories = _categoryService.ListCategories();
             return Ok(allCategories);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = _categoryRepository.GetById(id);
-
-            if(category == null)
+            try
             {
-                return NotFound();
+                var category = _categoryService.GetCategoryById(id);
+                return Ok(category);
             }
-
-            return Ok(category);
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CategoryDto dto)
+        public async Task<IActionResult> Create([FromBody] CategoryRequestDto dto)
         {
             try
             {
-                _categoryRepository.AddNewCategory(dto);
+                var response = _categoryService.CreateCategory(dto);
 
-                return Ok("Created");
+                return Ok(response);
             }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-            
+            }   
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] CategoryDto dto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] CategoryRequestDto dto)
         {
-
             try
             {
-                _categoryRepository.UpdateCategory(dto);
-                return Ok("Updated");
+                var updatedCategory = _categoryService.UpdateCategory(id, dto);
+                return Ok(updatedCategory);
             }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            
         }
 
         [HttpDelete("{id}")]
@@ -74,9 +72,9 @@ namespace Tasky.Controllers
         {
             try
             {
-                _categoryRepository.RemoveCategory(id);
+                var wasCategoryDeleted = _categoryService.DeleteCategory(id);
 
-                return Ok("Removed");
+                return Ok(wasCategoryDeleted);
             }
             catch (Exception ex)
             {
