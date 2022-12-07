@@ -15,7 +15,7 @@ namespace Tasky.Models
         public string Name { get; set; }
 
         [Column("createdDate")]
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public List<TaskList> TaskLists { get; set; } = new();
 

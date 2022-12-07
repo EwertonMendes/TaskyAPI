@@ -34,7 +34,7 @@ namespace Tasky.Services
         {
             var category = _repository.GetById(id);
 
-            if (category == null) throw new Exception("Category not found");
+            if (category == null) throw new Exception($"Category with id {id} not found");
 
             var categoryDto = new CategoryResponseDto
             {
@@ -55,13 +55,15 @@ namespace Tasky.Services
 
         public CategoryResponseDto UpdateCategory(string id, CategoryRequestDto category)
         {
-            var createdCategory = _repository.UpdateCategory(category, id);
+            var updatedCategory = _repository.UpdateCategory(category, id);
+
+            if (updatedCategory == null) throw new Exception($"Category with id {id} not found");
 
             return new CategoryResponseDto
             {
-                Id = createdCategory.Id,
-                Name = createdCategory.Name,
-                CreatedDate = createdCategory.CreatedDate,
+                Id = updatedCategory.Id,
+                Name = updatedCategory.Name,
+                CreatedDate = updatedCategory.CreatedDate,
             };
         }
     }

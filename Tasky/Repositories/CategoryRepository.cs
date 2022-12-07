@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tasky.Data;
+﻿using Tasky.Data;
 using Tasky.Dtos.Request;
-using Tasky.Dtos.Response;
 using Tasky.Interfaces;
 using Tasky.Models;
 
@@ -15,8 +13,7 @@ namespace Tasky.Repositories
         {
             var newCategory = new Category
             {
-                Name = categoryDto.Name,
-                CreatedDate = categoryDto.CreatedDate,
+                Name = categoryDto.Name
             };
 
            _context.Category.Add(newCategory);
@@ -37,14 +34,13 @@ namespace Tasky.Repositories
             return true;
         }
 
-        public Category UpdateCategory(CategoryRequestDto categoryDto, string id)
+        public Category? UpdateCategory(CategoryRequestDto categoryDto, string id)
         {
             var category = this.GetById(Int32.Parse(id));
 
-            if (category == null) throw new Exception("Category not found");
+            if (category == null) return null;
 
             category.Name = categoryDto.Name;
-            category.CreatedDate = categoryDto.CreatedDate;
 
             _context.Category.Update(category);
             _context.SaveChanges();
