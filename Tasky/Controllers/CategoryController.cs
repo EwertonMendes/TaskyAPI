@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tasky.Data;
 using Tasky.Dtos.Request;
-using Tasky.Dtos.Response;
 using Tasky.Interfaces;
-using Tasky.Models;
 
 namespace Tasky.Controllers
 {
@@ -12,9 +9,9 @@ namespace Tasky.Controllers
     public class CategoryController : ControllerBase
     {
         public readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryRepository)
+        public CategoryController(ICategoryService categoryService)
         {
-            _categoryService = categoryRepository;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
