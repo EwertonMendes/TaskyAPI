@@ -7,7 +7,7 @@ namespace Tasky.Repositories
 {
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(Context context) : base(context){}
+        public CategoryRepository(TaskyContext context) : base(context){}
 
         public Category AddNewCategory(CategoryRequestDto categoryDto)
         {

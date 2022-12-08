@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskyLocal")));
+builder.Services.AddDbContext<TaskyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskyLocal")));
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
@@ -23,7 +23,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<Context>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<TaskyContext>();
     dbContext.Database.EnsureCreated();
 }
 

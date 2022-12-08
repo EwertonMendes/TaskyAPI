@@ -4,9 +4,9 @@ using Tasky.Interfaces;
 namespace Tasky.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    protected readonly Context _context;
+    protected readonly TaskyContext _context;
 
-    public GenericRepository(Context context)
+    public GenericRepository(TaskyContext context)
     {
         _context = context;
     }

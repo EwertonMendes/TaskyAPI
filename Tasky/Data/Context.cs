@@ -3,9 +3,9 @@ using Tasky.Models;
 
 namespace Tasky.Data;
 
-public class Context : DbContext
+public class TaskyContext : DbContext
 {
-    public Context(DbContextOptions<Context> options) : base (options)
+    public TaskyContext(DbContextOptions<TaskyContext> options) : base (options)
     {
 
     }
