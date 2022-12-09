@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tasky.Dtos.Response;
 
 namespace Tasky.Models
 {
@@ -17,7 +18,7 @@ namespace Tasky.Models
         public Category Category { get; set; }
 
         [Column("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Column("checked")]
         public bool Checked { get; set; }

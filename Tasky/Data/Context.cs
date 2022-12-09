@@ -5,10 +5,7 @@ namespace Tasky.Data;
 
 public class TaskyContext : DbContext
 {
-    public TaskyContext(DbContextOptions<TaskyContext> options) : base (options)
-    {
-
-    }
+    public TaskyContext(DbContextOptions<TaskyContext> options) : base (options){}
 
     public DbSet<Category> Category { get; set; }
     public DbSet<TaskList> TaskList { get; set; }
@@ -16,6 +13,7 @@ public class TaskyContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TaskList>().HasOne(t => t.Category).WithMany(t => t.TaskLists).IsRequired();
         modelBuilder.Entity<Item>().HasOne(p => p.TaskList).WithMany(b => b.Items);
     }
 }
