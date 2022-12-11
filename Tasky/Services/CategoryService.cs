@@ -1,28 +1,25 @@
-﻿using Tasky.Dtos.Request;
+﻿using AutoMapper;
+using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Interfaces;
-using Tasky.Models;
 
 namespace Tasky.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repository;
-        public CategoryService(ICategoryRepository repository)
+        private readonly IMapper _mapper;
+        public CategoryService(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public CategoryResponseDto CreateCategory(CategoryRequestDto category)
         {
             var createdCategory = _repository.AddNewCategory(category);
 
-            return new CategoryResponseDto
-            {
-                Id = createdCategory.Id,
-                Name = createdCategory.Name,
-                CreatedDate = createdCategory.CreatedDate,
-            };
+            return _mapper.Map<CategoryResponseDto>(createdCategory);
         }
 
         public bool DeleteCategory(int id)
@@ -36,21 +33,21 @@ namespace Tasky.Services
 
             if (category == null) throw new Exception($"Category with id {id} not found");
 
-            var categoryDto = new CategoryResponseDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                CreatedDate = category.CreatedDate
-            };
-
-            return categoryDto;
+            return _mapper.Map<CategoryResponseDto>(category);
         }
 
-        public IEnumerable<Category> ListCategories()
+        public IEnumerable<CategoryResponseDto> ListCategories()
         {
             var allCategories = _repository.GetAll().ToList();
 
-            return allCategories;
+            var categoryList = new List<CategoryResponseDto>();
+
+            foreach (var category in allCategories)
+            {
+                categoryList.Add(_mapper.Map<CategoryResponseDto>(category));
+            }
+
+            return categoryList;
         }
 
         public CategoryResponseDto UpdateCategory(string id, CategoryRequestDto category)
@@ -59,12 +56,7 @@ namespace Tasky.Services
 
             if (updatedCategory == null) throw new Exception($"Category with id {id} not found");
 
-            return new CategoryResponseDto
-            {
-                Id = updatedCategory.Id,
-                Name = updatedCategory.Name,
-                CreatedDate = updatedCategory.CreatedDate,
-            };
+            return _mapper.Map<CategoryResponseDto>(updatedCategory);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Tasky.Data;
+﻿using AutoMapper;
+using Tasky.Data;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces;
 using Tasky.Models;
@@ -7,14 +8,15 @@ namespace Tasky.Repositories
 {
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(TaskyContext context) : base(context){}
+        private readonly IMapper _mapper;
+        public CategoryRepository(TaskyContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
+        }
 
         public Category AddNewCategory(CategoryRequestDto categoryDto)
         {
-            var newCategory = new Category
-            {
-                Name = categoryDto.Name
-            };
+            var newCategory = _mapper.Map<Category>(categoryDto);
 
            _context.Category.Add(newCategory);
            _context.SaveChanges();

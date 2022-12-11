@@ -2,8 +2,6 @@
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Interfaces;
-using Tasky.Models;
-using Tasky.Utilities;
 
 namespace Tasky.Services
 {

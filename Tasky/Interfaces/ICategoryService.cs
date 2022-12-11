@@ -6,7 +6,7 @@ namespace Tasky.Interfaces
 {
     public interface ICategoryService
     {
-        IEnumerable<Category> ListCategories();
+        IEnumerable<CategoryResponseDto> ListCategories();
         CategoryResponseDto GetCategoryById(int id);
         CategoryResponseDto CreateCategory(CategoryRequestDto category);
         CategoryResponseDto UpdateCategory(string id, CategoryRequestDto category);
