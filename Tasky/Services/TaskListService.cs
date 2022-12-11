@@ -1,4 +1,5 @@
-﻿using Tasky.Dtos.Request;
+﻿using AutoMapper;
+using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Interfaces;
 using Tasky.Models;
@@ -9,22 +10,18 @@ namespace Tasky.Services
     public class TaskListService : ITaskListService
     {
         private readonly ITaskListRepository _repository;
-        public TaskListService(ITaskListRepository repository)
+        private readonly IMapper _mapper;
+        public TaskListService(ITaskListRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public TaskListResponseDto CreateTaskList(TaskListRequestDto taskList)
         {
             var createdTaskList = _repository.AddNewTaskList(taskList);
 
-            return new TaskListResponseDto
-            {
-                Id = createdTaskList.Id,
-                Name = createdTaskList.Name,
-                Category = createdTaskList.Category.ToDto(),
-                Checked = createdTaskList.Checked,
-            };
+            return _mapper.Map<TaskListResponseDto>(createdTaskList);
         }
 
         public bool DeleteTaskList(int id)
@@ -38,13 +35,7 @@ namespace Tasky.Services
 
             if (taskList == null) throw new Exception($"Task List with id: {id} not found");
 
-            return new TaskListResponseDto
-            {
-                Id = taskList.Id,
-                Name = taskList.Name,
-                Category = taskList.Category.ToDto(),
-                Checked = taskList.Checked,
-            };
+            return _mapper.Map<TaskListResponseDto>(taskList);
         }
 
         public IEnumerable<TaskListResponseDto> GetAllLists()
@@ -55,13 +46,7 @@ namespace Tasky.Services
 
             foreach(var taskList in allTaskLists)
             {
-                responseList.Add(new()
-                {
-                    Id = taskList.Id,
-                    Name = taskList.Name,
-                    Category = taskList.Category.ToDto(),
-                    Checked = taskList.Checked,
-                });
+                responseList.Add(_mapper.Map<TaskListResponseDto>(taskList));
             }
 
             return responseList;
@@ -73,13 +58,7 @@ namespace Tasky.Services
 
             if (updatedTaskList == null) throw new Exception($"Task List with id: {id} not found");
 
-            return new TaskListResponseDto
-            {
-                Id = updatedTaskList.Id,
-                Name = updatedTaskList.Name,
-                Category = updatedTaskList.Category.ToDto(),
-                Checked = updatedTaskList.Checked,
-            };
+            return _mapper.Map<TaskListResponseDto>(updatedTaskList);
         }
     }
 }

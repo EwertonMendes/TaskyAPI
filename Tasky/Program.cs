@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tasky.Data;
 using Tasky.Interfaces;
+using Tasky.Mapping;
 using Tasky.Repositories;
 using Tasky.Services;
 
@@ -12,6 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(MappingConfiguration));
 
 builder.Services.AddDbContext<TaskyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskyLocal")));
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));

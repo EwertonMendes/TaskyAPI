@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Tasky.Data;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces;
@@ -9,10 +10,13 @@ namespace Tasky.Repositories
     public class TaskListRepository : GenericRepository<TaskList>, ITaskListRepository
     {
         private readonly ICategoryService _categoryService;
+        private readonly IMapper _mapper;
 
-        public TaskListRepository(TaskyContext context, ICategoryService categoryService) : base(context)
+        public TaskListRepository(TaskyContext context, ICategoryService categoryService, IMapper mapper) 
+            : base(context)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         public override IEnumerable<TaskList> GetAll()
@@ -20,16 +24,17 @@ namespace Tasky.Repositories
             return _context.TaskList.Include(x => x.Category).ToList();
         }
 
+        public override TaskList? GetById(int id)
+        {
+            return _context.TaskList.Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == id);
+        }
+
         public TaskList AddNewTaskList(TaskListRequestDto taskListDto)
         {
             CheckCategoryId(taskListDto.CategoryId);
 
-            var newCategory = new TaskList
-            {
-                Name = taskListDto.Name,
-                CategoryId = taskListDto.CategoryId,
-                Checked = taskListDto.Checked
-            };
+            var newCategory = _mapper.Map<TaskList>(taskListDto);
 
             var addedEntity = _context.TaskList.Add(newCategory).Entity;
             _context.SaveChanges();
