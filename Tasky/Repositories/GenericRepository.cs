@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Tasky.Data;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Models;
+using Tasky.Interfaces.Repositories;
 using Tasky.Utilities;
 
 namespace Tasky.Repositories;

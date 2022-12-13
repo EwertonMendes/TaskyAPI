@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Repositories;
+using Tasky.Interfaces.Services;
 using Tasky.Models;
 
 namespace Tasky.Repositories
@@ -20,7 +21,7 @@ namespace Tasky.Repositories
 
         public IEnumerable<TaskList?> GetAllTaskLists()
         {
-            return _genericRepository.GetAll(includes: x => x.Category).ToList();
+            return _genericRepository.GetAll(x => x.Category).ToList();
         }
 
         public TaskList? GetTaskListById(int id)

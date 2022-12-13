@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tasky.Data;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Repositories;
+using Tasky.Interfaces.Services;
 using Tasky.Mapping;
 using Tasky.Repositories;
 using Tasky.Services;

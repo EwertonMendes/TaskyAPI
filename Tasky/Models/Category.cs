@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Models;
 
 namespace Tasky.Models
 {

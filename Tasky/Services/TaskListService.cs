@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Repositories;
+using Tasky.Interfaces.Services;
 
 namespace Tasky.Services
 {

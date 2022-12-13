@@ -3,7 +3,7 @@ using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Models;
 
-namespace Tasky.Interfaces;
+namespace Tasky.Interfaces.Repositories;
 
 public interface ICategoryRepository
 {

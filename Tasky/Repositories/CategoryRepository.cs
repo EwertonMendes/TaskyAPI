@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Repositories;
 using Tasky.Models;
 
 namespace Tasky.Repositories

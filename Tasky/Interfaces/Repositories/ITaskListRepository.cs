@@ -1,7 +1,7 @@
 ﻿using Tasky.Dtos.Request;
 using Tasky.Models;
 
-namespace Tasky.Interfaces;
+namespace Tasky.Interfaces.Repositories;
 
 public interface ITaskListRepository
 {

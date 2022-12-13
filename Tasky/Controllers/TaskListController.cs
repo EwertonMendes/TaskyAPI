@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasky.Dtos.Request;
-using Tasky.Interfaces;
+using Tasky.Interfaces.Services;
 
 namespace Tasky.Controllers
 {

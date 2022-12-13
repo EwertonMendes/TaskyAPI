@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Tasky.Models;
 
-namespace Tasky.Interfaces
+namespace Tasky.Interfaces.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

@@ -1,4 +1,4 @@
-﻿namespace Tasky.Interfaces
+﻿namespace Tasky.Interfaces.Models
 {
     public interface IModel
     {
