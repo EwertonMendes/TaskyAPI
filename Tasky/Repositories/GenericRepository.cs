@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Tasky.Data;
 using Tasky.Interfaces;
+using Tasky.Utilities;
 
 namespace Tasky.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -14,7 +16,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _DbSet = context.Set<T>();
     }
 
-    public T Add(T entity)
+    public T? Add(T entity)
     {
         var newRecord = _DbSet.Add(entity).Entity;
         _context.SaveChanges();
@@ -22,14 +24,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return newRecord;
     }
 
-    public T Update(T entity)
+    public T? Update(T entity)
     {
         var updatedRecord = _DbSet.Update(entity).Entity;
         _context.SaveChanges();
         return updatedRecord;
     }
 
-    public IEnumerable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> filter = null)
+    public IEnumerable<T?> Find(Expression<Func<T, object>>[]? includes = null, Expression<Func<T, bool>> filter = null)
     {
         var query = _DbSet.AsQueryable();
 
@@ -37,17 +39,28 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         {
             query = query.Where(filter).AsNoTracking();
         }
-        return query.ToList();
+        return query.AsEnumerable().AsEnumerable();
     }
 
-    public virtual IEnumerable<T> GetAll()
+    public IEnumerable<T?> GetAll()
     {
-        return _DbSet.ToList();
+        return _DbSet.AsEnumerable();
     }
 
-    public virtual T? GetById(int id)
+    public IEnumerable<T?> GetAll(params Expression<Func<T, object>>[] includes)
+    {
+        return _DbSet.Includes(includes).AsEnumerable();
+    }
+
+    public T? GetById(int id)
     {
         return _DbSet.Find(id);
+    }
+
+    public T? GetById(int id, params Expression<Func<T, object>>[] includes)
+    {
+        return _DbSet.Includes(includes)
+            .Select(x => x as IModel).FirstOrDefault(x => x.Id == id) as T;
     }
 
     public void Remove(T entity)

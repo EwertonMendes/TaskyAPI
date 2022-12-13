@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Tasky.Dtos.Response;
+using Tasky.Interfaces;
 
 namespace Tasky.Models
 {
     [Table("Category")]
-    public class Category
+    public class Category : IModel
     {
         [Column("id")]
         [Key]

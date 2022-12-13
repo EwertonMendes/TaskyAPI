@@ -29,7 +29,7 @@ namespace Tasky.Services
 
         public TaskListResponseDto GetTaskListById(int id)
         {
-            var taskList = _repository.GetById(id);
+            var taskList = _repository.GetTaskListById(id);
 
             if (taskList == null) throw new Exception($"Task List with id: {id} not found");
 
@@ -38,7 +38,7 @@ namespace Tasky.Services
 
         public IEnumerable<TaskListResponseDto> GetAllLists()
         {
-            var allTaskLists = _repository.GetAll().ToList();
+            var allTaskLists = _repository.GetAllTaskLists().ToList();
 
             var responseList = new List<TaskListResponseDto>();
 
@@ -50,7 +50,7 @@ namespace Tasky.Services
             return responseList;
         }
 
-        public TaskListResponseDto UpdateTaskList(string id, TaskListRequestDto taskList)
+        public TaskListResponseDto UpdateTaskList(int id, TaskListRequestDto taskList)
         {
             var updatedTaskList = _repository.UpdateTaskList(taskList, id);
 

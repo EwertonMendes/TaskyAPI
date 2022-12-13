@@ -9,7 +9,7 @@ namespace Tasky.Interfaces
         IEnumerable<TaskListResponseDto> GetAllLists();
         TaskListResponseDto GetTaskListById(int id);
         TaskListResponseDto CreateTaskList(TaskListRequestDto taskList);
-        TaskListResponseDto UpdateTaskList(string id, TaskListRequestDto taskList);
+        TaskListResponseDto UpdateTaskList(int id, TaskListRequestDto taskList);
         bool DeleteTaskList(int id);
     }
 }

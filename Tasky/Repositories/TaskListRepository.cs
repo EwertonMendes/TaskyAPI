@@ -1,62 +1,56 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Tasky.Data;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces;
 using Tasky.Models;
 
 namespace Tasky.Repositories
 {
-    public class TaskListRepository : GenericRepository<TaskList>, ITaskListRepository
+    public class TaskListRepository : ITaskListRepository
     {
+        private readonly IGenericRepository<TaskList> _genericRepository;
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
-        public TaskListRepository(TaskyContext context, ICategoryService categoryService, IMapper mapper) 
-            : base(context)
+        public TaskListRepository(IGenericRepository<TaskList> genericRepository, ICategoryService categoryService, IMapper mapper)
         {
+            _genericRepository = genericRepository;
             _categoryService = categoryService;
             _mapper = mapper;
         }
 
-        public override IEnumerable<TaskList> GetAll()
+        public IEnumerable<TaskList?> GetAllTaskLists()
         {
-            return _context.TaskList.Include(x => x.Category).ToList();
+            return _genericRepository.GetAll(includes: x => x.Category).ToList();
         }
 
-        public override TaskList? GetById(int id)
+        public TaskList? GetTaskListById(int id)
         {
-            return _context.TaskList.Include(x => x.Category)
-                .FirstOrDefault(x => x.Id == id);
+            return _genericRepository.GetById(id, x => x.Category);
         }
 
-        public TaskList AddNewTaskList(TaskListRequestDto taskListDto)
+        public TaskList? AddNewTaskList(TaskListRequestDto taskListDto)
         {
             CheckCategoryId(taskListDto.CategoryId);
 
             var newCategory = _mapper.Map<TaskList>(taskListDto);
 
-            var addedEntity = _context.TaskList.Add(newCategory).Entity;
-            _context.SaveChanges();
-
-            return addedEntity;
+            return _genericRepository.Add(newCategory);
         }
 
         public bool RemoveTaskList(int id)
         {
-            var taskList = this.GetById(id);
+            var taskList = this.GetTaskListById(id);
 
             if (taskList == null) return false;
 
-            _context.Remove(taskList);
-            _context.SaveChanges();
+            _genericRepository.Remove(taskList);
 
             return true;
         }
 
-        public TaskList? UpdateTaskList(TaskListRequestDto taskListDto, string id)
+        public TaskList? UpdateTaskList(TaskListRequestDto taskListDto, int id)
         {
-            var taskList = this.GetById(Int32.Parse(id));
+            var taskList = this.GetTaskListById(id);
 
             if (taskList == null) return null;
 
@@ -67,10 +61,7 @@ namespace Tasky.Repositories
             taskList.CategoryId = taskListDto.CategoryId;
             taskList.Checked = taskListDto.Checked;
 
-            _context.TaskList.Update(taskList);
-            _context.SaveChanges();
-
-            return taskList;
+            return _genericRepository.Update(taskList);
         }
 
         private void CheckCategoryId(int categoryId)

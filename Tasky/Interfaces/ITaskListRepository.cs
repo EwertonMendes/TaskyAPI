@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tasky.Dtos.Request;
-using Tasky.Dtos.Response;
+﻿using Tasky.Dtos.Request;
 using Tasky.Models;
 
 namespace Tasky.Interfaces;
 
-public interface ITaskListRepository : IGenericRepository<TaskList>
+public interface ITaskListRepository
 {
-    TaskList AddNewTaskList(TaskListRequestDto taskListDto);
-    TaskList? UpdateTaskList(TaskListRequestDto taskListDto, string id);
+    TaskList? GetTaskListById(int id);
+    IEnumerable<TaskList> GetAllTaskLists();
+    TaskList? AddNewTaskList(TaskListRequestDto taskListDto);
+    TaskList? UpdateTaskList(TaskListRequestDto taskListDto, int id);
     bool RemoveTaskList(int id);
 }

@@ -9,20 +9,21 @@ namespace Tasky.Repositories
     {
         private readonly IMapper _mapper;
         private readonly IGenericRepository<Category> _genericRepository;
+
         public CategoryRepository(IMapper mapper, IGenericRepository<Category> genericRepository)
         {
             _mapper = mapper;
             _genericRepository = genericRepository;
         }
 
-        public Category AddNewCategory(CategoryRequestDto categoryDto)
+        public Category? AddNewCategory(CategoryRequestDto categoryDto)
         {
             var newCategory = _mapper.Map<Category>(categoryDto);
 
             return _genericRepository.Add(newCategory);
         }
 
-        public IEnumerable<Category> GetAllCategories()
+        public IEnumerable<Category?> GetAllCategories()
         {
             return _genericRepository.GetAll();
         }
