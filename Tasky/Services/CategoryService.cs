@@ -38,7 +38,7 @@ namespace Tasky.Services
 
         public IEnumerable<CategoryResponseDto> ListCategories()
         {
-            var allCategories = _repository.GetAll().ToList();
+            var allCategories = _repository.GetAllCategories().ToList();
 
             var categoryList = new List<CategoryResponseDto>();
 
@@ -50,7 +50,7 @@ namespace Tasky.Services
             return categoryList;
         }
 
-        public CategoryResponseDto UpdateCategory(string id, CategoryRequestDto category)
+        public CategoryResponseDto UpdateCategory(int id, CategoryRequestDto category)
         {
             var updatedCategory = _repository.UpdateCategory(category, id);
 

@@ -51,7 +51,7 @@ namespace Tasky.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] CategoryRequestDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] CategoryRequestDto dto)
         {
             try
             {

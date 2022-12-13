@@ -5,9 +5,11 @@ using Tasky.Models;
 
 namespace Tasky.Interfaces;
 
-public interface ICategoryRepository : IGenericRepository<Category>
+public interface ICategoryRepository
 {
+    Category? GetById(int id);
+    IEnumerable<Category> GetAllCategories();
     Category AddNewCategory(CategoryRequestDto categoryDto);
-    Category? UpdateCategory(CategoryRequestDto categoryDto, string id);
+    Category? UpdateCategory(CategoryRequestDto categoryDto, int id);
     bool RemoveCategory(int id);
 }
