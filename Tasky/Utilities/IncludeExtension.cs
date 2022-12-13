@@ -9,12 +9,13 @@ public static class IncludeExtension
                                             params Expression<Func<TEntity, object>>[] includes)
                                             where TEntity : class
     {
-        IQueryable<TEntity> query = null;
+        IQueryable<TEntity> query = dbSet.AsQueryable();
+
         foreach (var include in includes)
         {
-            query = dbSet.Include(include);
+            query = query.Include(include);
         }
 
-        return query == null ? dbSet : query;
+        return query;
     }
 }
