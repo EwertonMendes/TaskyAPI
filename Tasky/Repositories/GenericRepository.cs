@@ -17,22 +17,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _DbSet = context.Set<T>();
     }
 
-    public T? Add(T entity)
+    public async Task<T> Add(T entity)
     {
         var newRecord = _DbSet.Add(entity).Entity;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return newRecord;
     }
 
-    public T? Update(T entity)
+    public async Task<T> Update(T entity)
     {
         var updatedRecord = _DbSet.Update(entity).Entity;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return updatedRecord;
     }
 
-    public IEnumerable<T?> Find(Expression<Func<T, object>>[]? includes = null, Expression<Func<T, bool>> filter = null)
+    public async Task<IAsyncEnumerable<T>> Find(Expression<Func<T, object>>[]? includes = null, Expression<Func<T, bool>> filter = null)
     {
         var query = _DbSet.AsQueryable();
 
@@ -40,33 +40,33 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         {
             query = query.Where(filter).AsNoTracking();
         }
-        return query.AsEnumerable().AsEnumerable();
+        return query.AsAsyncEnumerable();
     }
 
-    public IEnumerable<T?> GetAll()
+    public async Task<IAsyncEnumerable<T>> GetAll()
     {
-        return _DbSet.AsEnumerable();
+        return _DbSet.AsAsyncEnumerable();
     }
 
-    public IEnumerable<T?> GetAll(params Expression<Func<T, object>>[] includes)
+    public async Task<IAsyncEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)
     {
-        return _DbSet.Includes(includes).AsEnumerable();
+        return _DbSet.Includes(includes).AsAsyncEnumerable();
     }
 
-    public T? GetById(int id)
+    public async Task<T?> GetById(int id)
     {
-        return _DbSet.Find(id);
+        return await _DbSet.FindAsync(id);
     }
 
-    public T? GetById(int id, params Expression<Func<T, object>>[] includes)
+    public async Task<T?> GetById(int id, params Expression<Func<T, object>>[] includes)
     {
-        return _DbSet.Includes(includes)
-            .Select(x => x as IModel).FirstOrDefault(x => x.Id == id) as T;
+        return await _DbSet.Includes(includes)
+            .Select(x => x as IModel).FirstOrDefaultAsync(x => x.Id == id) as T;
     }
 
-    public void Remove(T entity)
+    public async Task Remove(T entity)
     {
         _DbSet.Remove(entity);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

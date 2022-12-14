@@ -16,34 +16,34 @@ namespace Tasky.Services
             _mapper = mapper;
         }
 
-        public CategoryResponseDto CreateCategory(CategoryRequestDto category)
+        public async Task<CategoryResponseDto> CreateCategory(CategoryRequestDto category)
         {
-            var createdCategory = _repository.AddNewCategory(category);
+            var createdCategory = await _repository.AddNewCategory(category);
 
             return _mapper.Map<CategoryResponseDto>(createdCategory);
         }
 
-        public bool DeleteCategory(int id)
+        public async Task<bool> DeleteCategory(int id)
         {
-            return _repository.RemoveCategory(id);
+            return await _repository.RemoveCategory(id);
         }
 
-        public CategoryResponseDto GetCategoryById(int id)
+        public async Task<CategoryResponseDto> GetCategoryById(int id)
         {
-            var category = _repository.GetById(id);
+            var category = await _repository.GetById(id);
 
             if (category == null) throw new Exception($"Category with id {id} not found");
 
             return _mapper.Map<CategoryResponseDto>(category);
         }
 
-        public IEnumerable<CategoryResponseDto> ListCategories()
+        public async Task<IEnumerable<CategoryResponseDto>> ListCategories()
         {
-            var allCategories = _repository.GetAllCategories().ToList();
+            var allCategories = await _repository.GetAllCategories();
 
             var categoryList = new List<CategoryResponseDto>();
 
-            foreach (var category in allCategories)
+            foreach (var category in allCategories.ToEnumerable())
             {
                 categoryList.Add(_mapper.Map<CategoryResponseDto>(category));
             }
@@ -51,9 +51,9 @@ namespace Tasky.Services
             return categoryList;
         }
 
-        public CategoryResponseDto UpdateCategory(int id, CategoryRequestDto category)
+        public async Task<CategoryResponseDto> UpdateCategory(int id, CategoryRequestDto category)
         {
-            var updatedCategory = _repository.UpdateCategory(category, id);
+            var updatedCategory = await _repository.UpdateCategory(category, id);
 
             if (updatedCategory == null) throw new Exception($"Category with id {id} not found");
 

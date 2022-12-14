@@ -17,7 +17,7 @@ namespace Tasky.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var response = _taskListService.GetAllLists();
+            var response = await _taskListService.GetAllLists();
             return Ok(response);
         }
 
@@ -26,7 +26,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var response = _taskListService.GetTaskListById(id);
+                var response = await _taskListService.GetTaskListById(id);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var response = _taskListService.CreateTaskList(dto);
+                var response = await _taskListService.CreateTaskList(dto);
 
                 return Ok(response);
             }
@@ -55,7 +55,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var response = _taskListService.UpdateTaskList(id, dto);
+                var response = await _taskListService.UpdateTaskList(id, dto);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var response = _taskListService.DeleteTaskList(id);
+                var response = await _taskListService.DeleteTaskList(id);
 
                 return Ok(response);
             }

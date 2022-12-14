@@ -17,7 +17,7 @@ namespace Tasky.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var allCategories = _categoryService.ListCategories();
+            var allCategories = await _categoryService.ListCategories();
             return Ok(allCategories);
         }
 
@@ -26,7 +26,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var category = _categoryService.GetCategoryById(id);
+                var category = await _categoryService.GetCategoryById(id);
                 return Ok(category);
             }
             catch(Exception ex)
@@ -40,7 +40,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var response = _categoryService.CreateCategory(dto);
+                var response = await _categoryService.CreateCategory(dto);
 
                 return Ok(response);
             }
@@ -55,7 +55,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var updatedCategory = _categoryService.UpdateCategory(id, dto);
+                var updatedCategory = await _categoryService.UpdateCategory(id, dto);
                 return Ok(updatedCategory);
             }
             catch(Exception ex)
@@ -69,7 +69,7 @@ namespace Tasky.Controllers
         {
             try
             {
-                var wasCategoryDeleted = _categoryService.DeleteCategory(id);
+                var wasCategoryDeleted = await _categoryService.DeleteCategory(id);
 
                 return Ok(wasCategoryDeleted);
             }

@@ -1,15 +1,14 @@
 ﻿using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
-using Tasky.Models;
 
 namespace Tasky.Interfaces.Services
 {
     public interface ICategoryService
     {
-        IEnumerable<CategoryResponseDto> ListCategories();
-        CategoryResponseDto GetCategoryById(int id);
-        CategoryResponseDto CreateCategory(CategoryRequestDto category);
-        CategoryResponseDto UpdateCategory(int id, CategoryRequestDto category);
-        bool DeleteCategory(int id);
+        Task<IEnumerable<CategoryResponseDto>> ListCategories();
+        Task<CategoryResponseDto> GetCategoryById(int id);
+        Task<CategoryResponseDto> CreateCategory(CategoryRequestDto category);
+        Task<CategoryResponseDto> UpdateCategory(int id, CategoryRequestDto category);
+        Task<bool> DeleteCategory(int id);
     }
 }

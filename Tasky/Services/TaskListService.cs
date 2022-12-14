@@ -16,34 +16,34 @@ namespace Tasky.Services
             _mapper = mapper;
         }
 
-        public TaskListResponseDto CreateTaskList(TaskListRequestDto taskList)
+        public async Task<TaskListResponseDto> CreateTaskList(TaskListRequestDto taskList)
         {
-            var createdTaskList = _repository.AddNewTaskList(taskList);
+            var createdTaskList = await _repository.AddNewTaskList(taskList);
 
             return _mapper.Map<TaskListResponseDto>(createdTaskList);
         }
 
-        public bool DeleteTaskList(int id)
+        public async Task<bool> DeleteTaskList(int id)
         {
-            return _repository.RemoveTaskList(id);
+            return await _repository.RemoveTaskList(id);
         }
 
-        public TaskListResponseDto GetTaskListById(int id)
+        public async Task<TaskListResponseDto> GetTaskListById(int id)
         {
-            var taskList = _repository.GetTaskListById(id);
+            var taskList = await _repository.GetTaskListById(id);
 
             if (taskList == null) throw new Exception($"Task List with id: {id} not found");
 
             return _mapper.Map<TaskListResponseDto>(taskList);
         }
 
-        public IEnumerable<TaskListResponseDto> GetAllLists()
+        public async Task<IEnumerable<TaskListResponseDto>> GetAllLists()
         {
-            var allTaskLists = _repository.GetAllTaskLists().ToList();
+            var allTaskLists = await _repository.GetAllTaskLists();
 
             var responseList = new List<TaskListResponseDto>();
 
-            foreach(var taskList in allTaskLists)
+            foreach(var taskList in allTaskLists.ToEnumerable())
             {
                 responseList.Add(_mapper.Map<TaskListResponseDto>(taskList));
             }
@@ -51,9 +51,9 @@ namespace Tasky.Services
             return responseList;
         }
 
-        public TaskListResponseDto UpdateTaskList(int id, TaskListRequestDto taskList)
+        public async Task<TaskListResponseDto> UpdateTaskList(int id, TaskListRequestDto taskList)
         {
-            var updatedTaskList = _repository.UpdateTaskList(taskList, id);
+            var updatedTaskList = await _repository.UpdateTaskList(taskList, id);
 
             if (updatedTaskList == null) throw new Exception($"Task List with id: {id} not found");
 

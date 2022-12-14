@@ -19,39 +19,39 @@ namespace Tasky.Repositories
             _mapper = mapper;
         }
 
-        public IEnumerable<TaskList?> GetAllTaskLists()
+        public async Task<IAsyncEnumerable<TaskList>> GetAllTaskLists()
         {
-            return _genericRepository.GetAll(x => x.Category).ToList();
+            return await _genericRepository.GetAll(x => x.Category);
         }
 
-        public TaskList? GetTaskListById(int id)
+        public async Task<TaskList?> GetTaskListById(int id)
         {
-            return _genericRepository.GetById(id, x => x.Category);
+            return await _genericRepository.GetById(id, x => x.Category);
         }
 
-        public TaskList? AddNewTaskList(TaskListRequestDto taskListDto)
+        public async Task<TaskList> AddNewTaskList(TaskListRequestDto taskListDto)
         {
             CheckCategoryId(taskListDto.CategoryId);
 
             var newCategory = _mapper.Map<TaskList>(taskListDto);
 
-            return _genericRepository.Add(newCategory);
+            return await _genericRepository.Add(newCategory);
         }
 
-        public bool RemoveTaskList(int id)
+        public async Task<bool> RemoveTaskList(int id)
         {
-            var taskList = this.GetTaskListById(id);
+            var taskList = await this.GetTaskListById(id);
 
             if (taskList == null) return false;
 
-            _genericRepository.Remove(taskList);
+            await _genericRepository.Remove(taskList);
 
             return true;
         }
 
-        public TaskList? UpdateTaskList(TaskListRequestDto taskListDto, int id)
+        public async Task<TaskList> UpdateTaskList(TaskListRequestDto taskListDto, int id)
         {
-            var taskList = this.GetTaskListById(id);
+            var taskList = await this.GetTaskListById(id);
 
             if (taskList == null) return null;
 
@@ -62,7 +62,7 @@ namespace Tasky.Repositories
             taskList.CategoryId = taskListDto.CategoryId;
             taskList.Checked = taskListDto.Checked;
 
-            return _genericRepository.Update(taskList);
+            return await _genericRepository.Update(taskList);
         }
 
         private void CheckCategoryId(int categoryId)

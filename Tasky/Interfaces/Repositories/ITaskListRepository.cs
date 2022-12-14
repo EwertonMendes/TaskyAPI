@@ -5,9 +5,9 @@ namespace Tasky.Interfaces.Repositories;
 
 public interface ITaskListRepository
 {
-    TaskList? GetTaskListById(int id);
-    IEnumerable<TaskList> GetAllTaskLists();
-    TaskList? AddNewTaskList(TaskListRequestDto taskListDto);
-    TaskList? UpdateTaskList(TaskListRequestDto taskListDto, int id);
-    bool RemoveTaskList(int id);
+    Task<TaskList?> GetTaskListById(int id);
+    Task<IAsyncEnumerable<TaskList>> GetAllTaskLists();
+    Task<TaskList> AddNewTaskList(TaskListRequestDto taskListDto);
+    Task<TaskList> UpdateTaskList(TaskListRequestDto taskListDto, int id);
+    Task<bool> RemoveTaskList(int id);
 }

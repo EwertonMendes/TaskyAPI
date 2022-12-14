@@ -16,43 +16,43 @@ namespace Tasky.Repositories
             _genericRepository = genericRepository;
         }
 
-        public Category? AddNewCategory(CategoryRequestDto categoryDto)
+        public async Task<Category> AddNewCategory(CategoryRequestDto categoryDto)
         {
             var newCategory = _mapper.Map<Category>(categoryDto);
 
-            return _genericRepository.Add(newCategory);
+            return await _genericRepository.Add(newCategory);
         }
 
-        public IEnumerable<Category?> GetAllCategories()
+        public async Task<IAsyncEnumerable<Category>> GetAllCategories()
         {
-            return _genericRepository.GetAll();
+            return await _genericRepository.GetAll();
         }
 
-        public Category? GetById(int id)
+        public async Task<Category?> GetById(int id)
         {
-            return _genericRepository.GetById(id);
+            return await _genericRepository.GetById(id);
         }
 
-        public bool RemoveCategory(int id)
+        public async Task<bool> RemoveCategory(int id)
         {
-            var category = _genericRepository.GetById(id);
+            var category = await _genericRepository.GetById(id);
 
             if (category == null) return false;
 
-            _genericRepository.Remove(category);
+            await _genericRepository.Remove(category);
 
             return true;
         }
 
-        public Category? UpdateCategory(CategoryRequestDto categoryDto, int id)
+        public async Task<Category> UpdateCategory(CategoryRequestDto categoryDto, int id)
         {
-            var category = _genericRepository.GetById(id);
+            var category = await _genericRepository.GetById(id);
 
             if (category == null) return null;
 
             category.Name = categoryDto.Name;
 
-            return _genericRepository.Update(category);
+            return await _genericRepository.Update(category);
         }
     }
 }

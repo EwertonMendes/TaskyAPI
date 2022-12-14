@@ -6,10 +6,10 @@ namespace Tasky.Interfaces.Services
 {
     public interface ITaskListService
     {
-        IEnumerable<TaskListResponseDto> GetAllLists();
-        TaskListResponseDto GetTaskListById(int id);
-        TaskListResponseDto CreateTaskList(TaskListRequestDto taskList);
-        TaskListResponseDto UpdateTaskList(int id, TaskListRequestDto taskList);
-        bool DeleteTaskList(int id);
+        Task<IEnumerable<TaskListResponseDto>> GetAllLists();
+        Task<TaskListResponseDto> GetTaskListById(int id);
+        Task<TaskListResponseDto> CreateTaskList(TaskListRequestDto taskList);
+        Task<TaskListResponseDto> UpdateTaskList(int id, TaskListRequestDto taskList);
+        Task<bool> DeleteTaskList(int id);
     }
 }

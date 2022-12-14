@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tasky.Dtos.Request;
-using Tasky.Dtos.Response;
+﻿using Tasky.Dtos.Request;
 using Tasky.Models;
 
 namespace Tasky.Interfaces.Repositories;
 
 public interface ICategoryRepository
 {
-    Category? GetById(int id);
-    IEnumerable<Category> GetAllCategories();
-    Category AddNewCategory(CategoryRequestDto categoryDto);
-    Category? UpdateCategory(CategoryRequestDto categoryDto, int id);
-    bool RemoveCategory(int id);
+    Task<Category?> GetById(int id);
+    Task<IAsyncEnumerable<Category>> GetAllCategories();
+    Task<Category> AddNewCategory(CategoryRequestDto categoryDto);
+    Task<Category> UpdateCategory(CategoryRequestDto categoryDto, int id);
+    Task<bool> RemoveCategory(int id);
 }
