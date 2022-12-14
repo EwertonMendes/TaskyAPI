@@ -31,7 +31,7 @@ namespace Tasky.Repositories
 
         public async Task<TaskList> AddNewTaskList(TaskListRequestDto taskListDto)
         {
-            CheckCategoryId(taskListDto.CategoryId);
+            await CheckCategoryId(taskListDto.CategoryId);
 
             var newCategory = _mapper.Map<TaskList>(taskListDto);
 
@@ -56,7 +56,7 @@ namespace Tasky.Repositories
             if (taskList == null) return null;
 
             //TODO: Improve category validation
-            CheckCategoryId(taskList.CategoryId);
+            await CheckCategoryId(taskList.CategoryId);
 
             taskList.Name = taskListDto.Name;
             taskList.CategoryId = taskListDto.CategoryId;
@@ -65,9 +65,9 @@ namespace Tasky.Repositories
             return await _genericRepository.Update(taskList);
         }
 
-        private void CheckCategoryId(int categoryId)
+        private async Task CheckCategoryId(int categoryId)
         {
-            var category = _categoryService.GetCategoryById(categoryId);
+            var category = await _categoryService.GetCategoryById(categoryId);
 
             if(category == null)
             {
