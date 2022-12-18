@@ -24,60 +24,30 @@ namespace Tasky.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var category = await _categoryService.GetCategoryById(id);
-                return Ok(category);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var category = await _categoryService.GetCategoryById(id);
+            return Ok(category);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryRequestDto dto)
         {
-            try
-            {
-                var response = await _categoryService.CreateCategory(dto);
-
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }   
+            var response = await _categoryService.CreateCategory(dto);
+            return Ok(response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryRequestDto dto)
         {
-            try
-            {
-                var updatedCategory = await _categoryService.UpdateCategory(id, dto);
-                return Ok(updatedCategory);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var updatedCategory = await _categoryService.UpdateCategory(id, dto);
+            return Ok(updatedCategory);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            try
-            {
-                var wasCategoryDeleted = await _categoryService.DeleteCategory(id);
+            var wasCategoryDeleted = await _categoryService.DeleteCategory(id);
+            return Ok(wasCategoryDeleted);
 
-                return Ok(wasCategoryDeleted);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
         }
     }
 }

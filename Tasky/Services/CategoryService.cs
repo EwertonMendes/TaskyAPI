@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
+using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
 using Tasky.Interfaces.Validators;
@@ -29,14 +30,24 @@ namespace Tasky.Services
 
         public async Task<bool> DeleteCategory(int id)
         {
-            return await _repository.RemoveCategory(id);
+            var wasRemoved = await _repository.RemoveCategory(id);
+
+            if (wasRemoved == false)
+            {
+                throw new NotFoundException($"A category with id {id} was not found");
+            }
+
+            return wasRemoved;
         }
 
         public async Task<CategoryResponseDto> GetCategoryById(int id)
         {
             var category = await _repository.GetById(id);
 
-            _categoryValidator.Validate(category, id);
+            if(category == null)
+            {
+                throw new NotFoundException($"A category with id {id} was not found");
+            }
 
             return _mapper.Map<CategoryResponseDto>(category);
         }
@@ -59,7 +70,10 @@ namespace Tasky.Services
         {
             var updatedCategory = await _repository.UpdateCategory(category, id);
 
-            _categoryValidator.Validate(updatedCategory, id);
+            if (updatedCategory == null)
+            {
+                throw new NotFoundException($"A category with id {id} was not found");
+            }
 
             return _mapper.Map<CategoryResponseDto>(updatedCategory);
         }

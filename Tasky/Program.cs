@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Tasky.Data;
+using Tasky.Extensions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
 using Tasky.Interfaces.Validators;
@@ -54,5 +55,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.AddGlobalErrorHandler();
 
 app.Run();
