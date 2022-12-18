@@ -3,21 +3,25 @@ using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
+using Tasky.Interfaces.Validators;
 
 namespace Tasky.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repository;
+        private readonly ICategoryValidator _categoryValidator;
         private readonly IMapper _mapper;
-        public CategoryService(ICategoryRepository repository, IMapper mapper)
+        public CategoryService(ICategoryRepository repository, ICategoryValidator categoryValidator, IMapper mapper)
         {
             _repository = repository;
+            _categoryValidator = categoryValidator;
             _mapper = mapper;
         }
 
         public async Task<CategoryResponseDto> CreateCategory(CategoryRequestDto category)
         {
+            _categoryValidator.Validate(category);
             var createdCategory = await _repository.AddNewCategory(category);
 
             return _mapper.Map<CategoryResponseDto>(createdCategory);
@@ -32,7 +36,7 @@ namespace Tasky.Services
         {
             var category = await _repository.GetById(id);
 
-            if (category == null) throw new Exception($"Category with id {id} not found");
+            _categoryValidator.Validate(category, id);
 
             return _mapper.Map<CategoryResponseDto>(category);
         }
@@ -55,7 +59,7 @@ namespace Tasky.Services
         {
             var updatedCategory = await _repository.UpdateCategory(category, id);
 
-            if (updatedCategory == null) throw new Exception($"Category with id {id} not found");
+            _categoryValidator.Validate(updatedCategory, id);
 
             return _mapper.Map<CategoryResponseDto>(updatedCategory);
         }
