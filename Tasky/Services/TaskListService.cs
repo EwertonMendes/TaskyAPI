@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
+using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
 
@@ -25,14 +26,18 @@ namespace Tasky.Services
 
         public async Task<bool> DeleteTaskList(int id)
         {
-            return await _repository.RemoveTaskList(id);
+            var wasRemoved = await _repository.RemoveTaskList(id);
+
+            if (wasRemoved == false) throw new NotFoundException($"Task List with id {id} not found");
+
+            return wasRemoved;
         }
 
         public async Task<TaskListResponseDto> GetTaskListById(int id)
         {
             var taskList = await _repository.GetTaskListById(id);
 
-            if (taskList == null) throw new Exception($"Task List with id: {id} not found");
+            if (taskList == null) throw new NotFoundException($"Task List with id {id} not found");
 
             return _mapper.Map<TaskListResponseDto>(taskList);
         }
@@ -43,7 +48,7 @@ namespace Tasky.Services
 
             var responseList = new List<TaskListResponseDto>();
 
-            foreach(var taskList in allTaskLists.ToEnumerable())
+            foreach (var taskList in allTaskLists.ToEnumerable())
             {
                 responseList.Add(_mapper.Map<TaskListResponseDto>(taskList));
             }
@@ -55,7 +60,7 @@ namespace Tasky.Services
         {
             var updatedTaskList = await _repository.UpdateTaskList(taskList, id);
 
-            if (updatedTaskList == null) throw new Exception($"Task List with id: {id} not found");
+            if (updatedTaskList == null) throw new NotFoundException($"Task List with id {id} not found");
 
             return _mapper.Map<TaskListResponseDto>(updatedTaskList);
         }

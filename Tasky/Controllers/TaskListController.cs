@@ -24,60 +24,29 @@ namespace Tasky.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var response = await _taskListService.GetTaskListById(id);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = await _taskListService.GetTaskListById(id);
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TaskListRequestDto dto)
         {
-            try
-            {
-                var response = await _taskListService.CreateTaskList(dto);
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = await _taskListService.CreateTaskList(dto);
+            return Ok(response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TaskListRequestDto dto)
         {
-            try
-            {
-                var response = await _taskListService.UpdateTaskList(id, dto);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = await _taskListService.UpdateTaskList(id, dto);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            try
-            {
-                var response = await _taskListService.DeleteTaskList(id);
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            var response = await _taskListService.DeleteTaskList(id);
+            return Ok(response);
         }
     }
 }

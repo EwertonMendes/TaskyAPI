@@ -32,10 +32,7 @@ namespace Tasky.Services
         {
             var wasRemoved = await _repository.RemoveCategory(id);
 
-            if (wasRemoved == false)
-            {
-                throw new NotFoundException($"A category with id {id} was not found");
-            }
+            if (wasRemoved == false) throw new NotFoundException($"A category with id {id} was not found");
 
             return wasRemoved;
         }
@@ -44,10 +41,7 @@ namespace Tasky.Services
         {
             var category = await _repository.GetById(id);
 
-            if(category == null)
-            {
-                throw new NotFoundException($"A category with id {id} was not found");
-            }
+            if (category == null) throw new NotFoundException($"A category with id {id} was not found");
 
             return _mapper.Map<CategoryResponseDto>(category);
         }
@@ -70,10 +64,7 @@ namespace Tasky.Services
         {
             var updatedCategory = await _repository.UpdateCategory(category, id);
 
-            if (updatedCategory == null)
-            {
-                throw new NotFoundException($"A category with id {id} was not found");
-            }
+            if (updatedCategory == null) throw new NotFoundException($"A category with id {id} was not found");
 
             return _mapper.Map<CategoryResponseDto>(updatedCategory);
         }

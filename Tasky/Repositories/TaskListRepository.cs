@@ -57,12 +57,11 @@ namespace Tasky.Repositories
             taskList.Checked = taskListDto.Checked;
 
             //TODO: improve this check
-            if(taskListDto.CategoryId != taskList.CategoryId)
+            if (taskListDto.CategoryId != taskList.CategoryId)
             {
                 var category = await _categoryService.GetCategoryById(taskListDto.CategoryId);
                 taskList.CategoryId = category.Id;
             }
-
 
             return await _genericRepository.Update(taskList);
         }
