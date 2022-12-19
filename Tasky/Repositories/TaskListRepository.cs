@@ -54,7 +54,6 @@ namespace Tasky.Repositories
             if (taskList == null) return null;
 
             taskList.Name = taskListDto.Name;
-            taskList.Checked = taskListDto.Checked;
 
             //TODO: improve this check
             if (taskListDto.CategoryId != taskList.CategoryId)

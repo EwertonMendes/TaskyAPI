@@ -7,6 +7,5 @@ namespace Tasky.Dtos.Response
         public int Id { get; set; }
         public string Name { get; set; }
         public CategoryResponseDto Category { get; set; }
-        public bool Checked { get; set; }
     }
 }

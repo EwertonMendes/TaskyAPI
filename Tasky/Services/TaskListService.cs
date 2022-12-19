@@ -5,8 +5,6 @@ using Tasky.Dtos.Response;
 using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
-using Tasky.Interfaces.Validators;
-using Tasky.Models;
 
 namespace Tasky.Services
 {

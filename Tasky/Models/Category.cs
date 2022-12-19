@@ -13,6 +13,8 @@ namespace Tasky.Models
         public int Id { get; set; }
 
         [Column("name")]
+        [Required]
+        [StringLength(50, MinimumLength = 4)]
         public string Name { get; set; } = string.Empty;
 
         [Column("createdDate")]

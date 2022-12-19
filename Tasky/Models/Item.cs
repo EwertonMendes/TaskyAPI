@@ -12,9 +12,16 @@ namespace Tasky.Models
         public int Id { get; set; }
 
         [Column("name")]
+        [Required]
+        [StringLength(50, MinimumLength = 4)]
         public string Name { get; set; }
 
+
+        [Column("checked")]
+        public bool Checked { get; set; }
+
         [Column("createdDate")]
+        [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
         public TaskList TaskList { get; set; }
