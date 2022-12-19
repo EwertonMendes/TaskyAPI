@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace Tasky.Dtos.Request;
 
-namespace Tasky.Dtos.Request
+public class CategoryRequestDto
 {
-    public class CategoryRequestDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

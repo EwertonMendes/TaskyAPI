@@ -1,24 +1,32 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
+using Tasky.Interfaces.Validators;
+using Tasky.Models;
 
 namespace Tasky.Services
 {
     public class TaskListService : ITaskListService
     {
         private readonly ITaskListRepository _repository;
+        private readonly IValidator<TaskListRequestDto> _taskListValidator;
         private readonly IMapper _mapper;
-        public TaskListService(ITaskListRepository repository, IMapper mapper)
+
+        public TaskListService(ITaskListRepository repository, IValidator<TaskListRequestDto> taskListValidator, IMapper mapper)
         {
             _repository = repository;
+            _taskListValidator = taskListValidator;
             _mapper = mapper;
         }
 
         public async Task<TaskListResponseDto> CreateTaskList(TaskListRequestDto taskList)
         {
+            _taskListValidator.ValidateAndThrow(taskList);
+
             var createdTaskList = await _repository.AddNewTaskList(taskList);
 
             return _mapper.Map<TaskListResponseDto>(createdTaskList);
@@ -58,6 +66,8 @@ namespace Tasky.Services
 
         public async Task<TaskListResponseDto> UpdateTaskList(int id, TaskListRequestDto taskList)
         {
+            _taskListValidator.ValidateAndThrow(taskList);
+
             var updatedTaskList = await _repository.UpdateTaskList(taskList, id);
 
             if (updatedTaskList == null) throw new NotFoundException($"Task List with id {id} not found");
