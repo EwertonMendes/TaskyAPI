@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
-using Tasky.Interfaces.Validators;
 
 namespace Tasky.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repository;
-        private readonly ICategoryValidator _categoryValidator;
+        private readonly IValidator<CategoryRequestDto> _categoryValidator;
         private readonly IMapper _mapper;
-        public CategoryService(ICategoryRepository repository, ICategoryValidator categoryValidator, IMapper mapper)
+        public CategoryService(ICategoryRepository repository, IValidator<CategoryRequestDto> categoryValidator, IMapper mapper)
         {
             _repository = repository;
             _categoryValidator = categoryValidator;
@@ -22,7 +22,8 @@ namespace Tasky.Services
 
         public async Task<CategoryResponseDto> CreateCategory(CategoryRequestDto category)
         {
-            _categoryValidator.Validate(category);
+            _categoryValidator.ValidateAndThrow(category);
+
             var createdCategory = await _repository.AddNewCategory(category);
 
             return _mapper.Map<CategoryResponseDto>(createdCategory);
@@ -62,6 +63,8 @@ namespace Tasky.Services
 
         public async Task<CategoryResponseDto> UpdateCategory(int id, CategoryRequestDto category)
         {
+            _categoryValidator.ValidateAndThrow(category);
+
             var updatedCategory = await _repository.UpdateCategory(category, id);
 
             if (updatedCategory == null) throw new NotFoundException($"A category with id {id} was not found");

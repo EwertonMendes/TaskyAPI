@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using FluentValidation;
+using System.Net;
 using System.Text.Json;
 using Tasky.Exceptions;
 
@@ -18,7 +19,8 @@ public class GlobalExceptionHandlerMiddleware
         try
         {
             await _next(httpContext);
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext, ex);
         }
@@ -31,7 +33,7 @@ public class GlobalExceptionHandlerMiddleware
 
         var exceptionType = ex.GetType();
 
-        if(exceptionType == typeof(BadRequestException))
+        if (exceptionType == typeof(BadRequestException))
         {
             status = HttpStatusCode.BadRequest;
         }
@@ -41,13 +43,22 @@ public class GlobalExceptionHandlerMiddleware
             status = HttpStatusCode.NotFound;
         }
 
-        var exceptionResult = JsonSerializer.Serialize( new
+        if (exceptionType == typeof(ValidationException))
+        {
+            var validationException = ex as ValidationException;
+
+            message = string.Join("; ", validationException.Errors);
+
+            status = HttpStatusCode.BadRequest;
+        }
+
+        var exceptionResult = JsonSerializer.Serialize(new
         {
             error = message
         });
-            
+
         httpContext.Response.ContentType = "application/json";
-        httpContext.Response.StatusCode = (int) status;
+        httpContext.Response.StatusCode = (int)status;
 
         return httpContext.Response.WriteAsync(exceptionResult);
     }

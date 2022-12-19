@@ -3,11 +3,11 @@ using Tasky.Data;
 using Tasky.Extensions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
-using Tasky.Interfaces.Validators;
 using Tasky.Mapping;
 using Tasky.Repositories;
 using Tasky.Services;
 using Tasky.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,7 @@ builder.Services.AddTransient<ITaskListRepository, TaskListRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ITaskListService, TaskListService>();
 
-builder.Services.AddTransient<ICategoryValidator, CategoryValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CategoryRequestValidator>();
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
