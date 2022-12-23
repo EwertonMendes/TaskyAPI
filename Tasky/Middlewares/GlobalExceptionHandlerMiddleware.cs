@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text.Json;
+using Tasky.Dtos.Response.Error;
 using Tasky.Exceptions;
 
 namespace Tasky.Middlewares;
@@ -30,6 +32,7 @@ public class GlobalExceptionHandlerMiddleware
     {
         HttpStatusCode status = HttpStatusCode.InternalServerError;
         string message = ex.Message;
+        List<ValidationErrorDto> validationErrorList = new();
 
         var exceptionType = ex.GetType();
 
@@ -47,19 +50,42 @@ public class GlobalExceptionHandlerMiddleware
         {
             var validationException = ex as ValidationException;
 
-            message = string.Join("; ", validationException.Errors);
+            message = "There are validation errors on your request";
+
+            foreach (var error in validationException.Errors)
+            {
+                validationErrorList.Add(new ValidationErrorDto
+                {
+                    Field = error.PropertyName,
+                    Message = error.ErrorMessage,
+                });
+            }
 
             status = HttpStatusCode.BadRequest;
         }
 
-        var exceptionResult = JsonSerializer.Serialize(new
-        {
-            error = message
-        });
+        var exceptionResult = GetSerializedMessage(message, validationErrorList);
 
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = (int)status;
 
         return httpContext.Response.WriteAsync(exceptionResult);
+    }
+
+    private static string GetSerializedMessage(string message, List<ValidationErrorDto> validationErrorList)
+    {
+        if(!validationErrorList.IsNullOrEmpty())
+        {
+            return JsonSerializer.Serialize(new MultipleErrorsResponseDto
+            {
+                Message = message,
+                Errors = validationErrorList
+            });
+        }
+
+        return JsonSerializer.Serialize(new SingleErrorResponseDto
+        {
+            Message = message
+        });
     }
 }
