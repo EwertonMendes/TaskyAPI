@@ -23,7 +23,7 @@ namespace Tasky.Services
 
         public async Task<TaskListResponseDto> CreateTaskList(TaskListRequestDto taskList)
         {
-            _taskListValidator.ValidateAndThrow(taskList);
+            await _taskListValidator.ValidateAndThrowAsync(taskList);
 
             var createdTaskList = await _repository.AddNewTaskList(taskList);
 
@@ -64,7 +64,7 @@ namespace Tasky.Services
 
         public async Task<TaskListResponseDto> UpdateTaskList(int id, TaskListRequestDto taskList)
         {
-            _taskListValidator.ValidateAndThrow(taskList);
+            await _taskListValidator.ValidateAndThrowAsync(taskList);
 
             var updatedTaskList = await _repository.UpdateTaskList(taskList, id);
 

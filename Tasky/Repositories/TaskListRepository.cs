@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Repositories;
-using Tasky.Interfaces.Services;
 using Tasky.Models;
 
 namespace Tasky.Repositories
@@ -9,13 +8,11 @@ namespace Tasky.Repositories
     public class TaskListRepository : ITaskListRepository
     {
         private readonly IGenericRepository<TaskList> _genericRepository;
-        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
-        public TaskListRepository(IGenericRepository<TaskList> genericRepository, ICategoryService categoryService, IMapper mapper)
+        public TaskListRepository(IGenericRepository<TaskList> genericRepository, IMapper mapper)
         {
             _genericRepository = genericRepository;
-            _categoryService = categoryService;
             _mapper = mapper;
         }
 
@@ -55,11 +52,9 @@ namespace Tasky.Repositories
 
             taskList.Name = taskListDto.Name;
 
-            //TODO: improve this check
             if (taskListDto.CategoryId != taskList.CategoryId)
             {
-                var category = await _categoryService.GetCategoryById(taskListDto.CategoryId);
-                taskList.CategoryId = category.Id;
+                taskList.CategoryId = taskListDto.CategoryId;
             }
 
             return await _genericRepository.Update(taskList);
