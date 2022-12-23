@@ -14,20 +14,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(MappingConfiguration));
 
-builder.Services.AddDbContext<TaskyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskyLocal")));
+// Database connection string building
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? builder.Configuration.GetValue<string>("EnvironmentVariables:DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? builder.Configuration.GetValue<string>("EnvironmentVariables:DB_NAME");
+var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? builder.Configuration.GetValue<string>("EnvironmentVariables:DB_SA_PASSWORD");
+var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword};TrustServerCertificate=True;MultipleActiveResultSets=true";
+
+builder.Services.AddDbContext<TaskyContext>(options => options.UseSqlServer(connectionString));
+
+// Repositories registration
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<ITaskListRepository, TaskListRepository>();
 
+// Business logics services registration
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ITaskListService, TaskListService>();
 
+// Validators registration
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryRequestValidator>();
 
 builder.Services.AddControllersWithViews()

@@ -1,0 +1,33 @@
+version: '3.4'
+
+networks:
+  tasky_network: 
+
+services:
+  database:
+    container_name: taskyAPIDatabase
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+       - 8002:1433
+    environment:
+       - ACCEPT_EULA=Y
+       - SA_PASSWORD=password@12345
+    networks:
+       - tasky_network
+
+  tasky:
+    container_name: taskyAPI
+    image: ${DOCKER_REGISTRY-}tasky
+    build:
+      context: .
+      dockerfile: Tasky/Dockerfile
+    ports:
+       - 8001:80
+    depends_on:
+        - database
+    environment:
+        - DB_HOST=database
+        - DB_NAME=tasky
+        - DB_SA_PASSWORD=password@12345
+    networks:
+       - tasky_network
