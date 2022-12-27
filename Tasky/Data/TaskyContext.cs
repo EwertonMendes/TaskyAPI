@@ -10,6 +10,7 @@ public class TaskyContext : DbContext
     public DbSet<Category> Category { get; set; }
     public DbSet<TaskList> TaskList { get; set; }
     public DbSet<Item> Item { get; set; }
+    public DbSet<User> User { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tasky.Data;
 
@@ -11,9 +12,10 @@ using Tasky.Data;
 namespace Tasky.Migrations
 {
     [DbContext(typeof(TaskyContext))]
-    partial class TaskyContextModelSnapshot : ModelSnapshot
+    [Migration("20221227011856_AddingUserEntity")]
+    partial class AddingUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +124,8 @@ namespace Tasky.Migrations
 
                     b.Property<string>("PassworHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("password");
 
                     b.HasKey("Id");

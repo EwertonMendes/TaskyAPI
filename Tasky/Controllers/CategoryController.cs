@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 
 namespace Tasky.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
-        public readonly ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
+
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

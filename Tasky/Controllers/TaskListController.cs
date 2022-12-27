@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 
 namespace Tasky.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]/[action]")]
     public class TaskListController : ControllerBase

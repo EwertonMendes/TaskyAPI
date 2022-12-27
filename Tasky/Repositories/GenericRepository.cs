@@ -43,10 +43,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return query.AsAsyncEnumerable();
     }
 
-    public async Task<IAsyncEnumerable<T>> GetAll()
-    {
-        return _DbSet.AsAsyncEnumerable();
-    }
+    public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate) 
+        => await _DbSet.SingleOrDefaultAsync(predicate);
+
+    public async Task<IAsyncEnumerable<T>> GetAll() => _DbSet.AsAsyncEnumerable();
 
     public async Task<IAsyncEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)
     {

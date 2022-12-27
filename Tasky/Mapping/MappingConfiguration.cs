@@ -3,23 +3,28 @@ using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
 using Tasky.Models;
 
-namespace Tasky.Mapping
+namespace Tasky.Mapping;
+
+public class MappingConfiguration : Profile
 {
-    public class MappingConfiguration : Profile
+    public MappingConfiguration()
     {
-        public MappingConfiguration()
-        {
-            CreateMap<Category, CategoryResponseDto>()
-                .ReverseMap();
+        CreateMap<Category, CategoryResponseDto>()
+            .ReverseMap();
 
-            CreateMap<Category, CategoryRequestDto>()
-                .ReverseMap();
+        CreateMap<Category, CategoryRequestDto>()
+            .ReverseMap();
 
-            CreateMap<TaskList, TaskListResponseDto>()
-                .ReverseMap();
+        CreateMap<TaskList, TaskListResponseDto>()
+            .ReverseMap();
 
-            CreateMap<TaskList, TaskListRequestDto>()
-                .ReverseMap();
-        }
+        CreateMap<TaskList, TaskListRequestDto>()
+            .ReverseMap();
+
+        CreateMap<User, UserRequestDto>()
+            .ReverseMap();
+
+        CreateMap<User, UserResponseDto>()
+            .ReverseMap();
     }
 }
