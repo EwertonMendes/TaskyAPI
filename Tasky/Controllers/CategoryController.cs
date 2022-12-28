@@ -7,8 +7,7 @@ namespace Tasky.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/v1/[controller]/[action]")]
-    public class CategoryController : ControllerBase
+    public class CategoryController : TaskyApiBaseControllerV1
     {
         private readonly ICategoryService _categoryService;
 

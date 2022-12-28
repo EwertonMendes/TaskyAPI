@@ -7,8 +7,7 @@ namespace Tasky.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/v1/[controller]/[action]")]
-    public class TaskListController : ControllerBase
+    public class TaskListController : TaskyApiBaseControllerV1
     {
         public readonly ITaskListService _taskListService;
         public TaskListController(ITaskListService taskListService)

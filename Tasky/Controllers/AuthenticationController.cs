@@ -9,8 +9,7 @@ using Tasky.Interfaces.Services;
 namespace Tasky.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : TaskyApiBaseControllerV1
 {
     private readonly IAuthService _authService;
     private readonly IConfiguration _configuration;

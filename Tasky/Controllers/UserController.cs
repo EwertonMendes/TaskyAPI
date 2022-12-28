@@ -5,8 +5,7 @@ using Tasky.Interfaces.Services;
 namespace Tasky.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class UserController : ControllerBase
+public class UserController : TaskyApiBaseControllerV1
 {
     private readonly IUserService _userService;
 
