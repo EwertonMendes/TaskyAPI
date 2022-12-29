@@ -12,6 +12,10 @@ public class User : IModel
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
+    [Column("name")]
+    [StringLength(50, MinimumLength = 4)]
+    public string Name { get; set; }
+
     [Column("email")]
     [Required]
     [StringLength(50, MinimumLength = 4)]
@@ -20,5 +24,9 @@ public class User : IModel
     [Column("password")]
     [Required]
     public string PassworHash { get; set; }
+
+    public List<Category> Categories { get; set; } = new();
+
+    public List<TaskList> TaskLists { get; set; } = new();
 
 }

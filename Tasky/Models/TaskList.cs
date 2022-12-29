@@ -12,16 +12,22 @@ public class TaskList : IModel
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
+    [Column("name")]
+    [Required]
+    [StringLength(50, MinimumLength = 4)]
+    public string Name { get; set; } = string.Empty;
+
     [Column("categoryId")]
     [Required]
     public int CategoryId { get; set; }
 
     public Category Category { get; set; }
 
-    [Column("name")]
+    [Column("userId")]
     [Required]
-    [StringLength(50, MinimumLength = 4)]
-    public string Name { get; set; } = string.Empty;
+    public int UserId { get; set; }
+
+    public User User { get; set; }
 
     [ForeignKey("taskListId")]
     public List<Item> Items { get; set; } = new();

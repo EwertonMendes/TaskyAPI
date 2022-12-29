@@ -20,5 +20,12 @@ public class Category : IModel
     [Column("createdDate")]
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+    [Column("userId")]
+    [Required]
+    public int UserId { get; set; }
+
+    public User User { get; set; }
+
     public List<TaskList> TaskLists { get; set; } = new();
+
 }

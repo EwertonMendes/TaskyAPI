@@ -24,11 +24,17 @@ public class UserRepository : IUserRepository
         return await _genericRepository.GetSingleAsync(x => x.Email == email);
     }
 
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await _genericRepository.GetSingleAsync(x => x.Id == id);
+    }
+
     public async Task<User> AddNewUser(UserRequestDto userDto)
     {
         //var newUser = _mapper.Map<User>(userDto);
         var newUser = new User
         {
+            Name = userDto.UserName,
             Email = userDto.Email,
             PassworHash = _passwordHasher.HashPassword(null, userDto.Password)
         };

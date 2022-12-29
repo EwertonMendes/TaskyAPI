@@ -22,34 +22,34 @@ namespace Tasky.Services
 
         public async Task<CategoryResponseDto> CreateCategory(CategoryRequestDto category)
         {
-            _categoryValidator.ValidateAndThrow(category);
+            await _categoryValidator.ValidateAndThrowAsync(category);
 
             var createdCategory = await _repository.AddNewCategory(category);
 
             return _mapper.Map<CategoryResponseDto>(createdCategory);
         }
 
-        public async Task<bool> DeleteCategory(int id)
+        public async Task<bool> DeleteCategory(int userId, int id)
         {
-            var wasRemoved = await _repository.RemoveCategory(id);
+            var wasRemoved = await _repository.RemoveCategory(userId, id);
 
             if (wasRemoved == false) throw new NotFoundException($"A category with id {id} was not found");
 
             return wasRemoved;
         }
 
-        public async Task<CategoryResponseDto> GetCategoryById(int id)
+        public async Task<CategoryResponseDto> GetCategoryById(int userId, int id)
         {
-            var category = await _repository.GetById(id);
+            var category = await _repository.GetById(userId, id);
 
             if (category == null) throw new NotFoundException($"A category with id {id} was not found");
 
             return _mapper.Map<CategoryResponseDto>(category);
         }
 
-        public async Task<IEnumerable<CategoryResponseDto>> ListCategories()
+        public async Task<IEnumerable<CategoryResponseDto>> ListCategories(int userId)
         {
-            var allCategories = await _repository.GetAllCategories();
+            var allCategories = await _repository.GetAllCategories(userId);
 
             var categoryList = new List<CategoryResponseDto>();
 
@@ -63,7 +63,7 @@ namespace Tasky.Services
 
         public async Task<CategoryResponseDto> UpdateCategory(int id, CategoryRequestDto category)
         {
-            _categoryValidator.ValidateAndThrow(category);
+            await _categoryValidator.ValidateAndThrowAsync(category);
 
             var updatedCategory = await _repository.UpdateCategory(category, id);
 

@@ -32,7 +32,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return updatedRecord;
     }
 
-    public async Task<IAsyncEnumerable<T>> Find(Expression<Func<T, object>>[]? includes = null, Expression<Func<T, bool>> filter = null)
+    public async Task<IEnumerable<T>> Where(Expression<Func<T, bool>> filter = null)
     {
         var query = _DbSet.AsQueryable();
 
@@ -40,7 +40,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         {
             query = query.Where(filter).AsNoTracking();
         }
-        return query.AsAsyncEnumerable();
+        return query.AsEnumerable();
     }
 
     public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate) 
@@ -68,5 +68,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _DbSet.Remove(entity);
         await _context.SaveChangesAsync();
+    }
+
+    public Task<T?> FindBy(Expression<Func<T, bool>> expression)
+    {
+        return _DbSet.FirstOrDefaultAsync(expression);
     }
 }

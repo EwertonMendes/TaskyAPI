@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tasky.Dtos.Request;
 using Tasky.Dtos.Response;
+using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
 
@@ -20,5 +21,14 @@ public class UserService : IUserService
     {
         var createdUser = await _repository.AddNewUser(userDto);
         return _mapper.Map<UserResponseDto>(createdUser);
+    }
+
+    public async Task<UserResponseDto> GetCategoryById(int id)
+    {
+        var user = await _repository.GetByIdAsync(id);
+
+        if (user == null) throw new NotFoundException($"A User with id {id} was not found");
+
+        return _mapper.Map<UserResponseDto>(user);
     }
 }

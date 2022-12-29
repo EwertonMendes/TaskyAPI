@@ -23,17 +23,17 @@ namespace Tasky.Repositories
             return await _genericRepository.Add(newCategory);
         }
 
-        public async Task<IAsyncEnumerable<Category>> GetAllCategories()
+        public async Task<IAsyncEnumerable<Category>> GetAllCategories(int userId)
         {
             return await _genericRepository.GetAll();
         }
 
-        public async Task<Category?> GetById(int id)
+        public async Task<Category?> GetById(int userId, int id)
         {
-            return await _genericRepository.GetById(id);
+            return await _genericRepository.FindBy(c => c.UserId == userId && c.Id == id);
         }
 
-        public async Task<bool> RemoveCategory(int id)
+        public async Task<bool> RemoveCategory(int userId, int id)
         {
             var category = await _genericRepository.GetById(id);
 

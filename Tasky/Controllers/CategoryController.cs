@@ -18,16 +18,16 @@ namespace Tasky.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int userId)
         {
-            var allCategories = await _categoryService.ListCategories();
+            var allCategories = await _categoryService.ListCategories(userId);
             return Ok(allCategories);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromQuery] int userId, int id)
         {
-            var category = await _categoryService.GetCategoryById(id);
+            var category = await _categoryService.GetCategoryById(userId, id);
             return Ok(category);
         }
 
@@ -46,9 +46,9 @@ namespace Tasky.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(int id)
+        public async Task<IActionResult> DeleteById([FromQuery] int userId, int id)
         {
-            var wasCategoryDeleted = await _categoryService.DeleteCategory(id);
+            var wasCategoryDeleted = await _categoryService.DeleteCategory(userId, id);
             return Ok(wasCategoryDeleted);
 
         }

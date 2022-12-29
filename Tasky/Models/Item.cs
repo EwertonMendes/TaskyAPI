@@ -24,5 +24,9 @@ public class Item : IModel
     [DataType(DataType.DateTime)]
     public DateTime CreatedDate { get; set; }
 
+    [Column("taskListId")]
+    [Required]
+    public int TaskListId { get; set; }
+
     public TaskList TaskList { get; set; }
 }
