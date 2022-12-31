@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tasky.Controllers.BaseControllers;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 
 namespace Tasky.Controllers;
 
 [ApiController]
-public class UserController : TaskyApiBaseControllerV1
+public class UserController : AuthorizedBaseControllerV1
 {
     private readonly IUserService _userService;
 

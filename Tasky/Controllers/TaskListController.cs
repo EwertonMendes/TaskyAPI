@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tasky.Controllers.BaseControllers;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 
@@ -7,7 +8,7 @@ namespace Tasky.Controllers
 {
     [Authorize]
     [ApiController]
-    public class TaskListController : TaskyApiBaseControllerV1
+    public class TaskListController : AuthorizedBaseControllerV1
     {
         public readonly ITaskListService _taskListService;
         public TaskListController(ITaskListService taskListService)

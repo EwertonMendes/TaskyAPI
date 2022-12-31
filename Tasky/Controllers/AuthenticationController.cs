@@ -3,13 +3,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Tasky.Controllers.BaseControllers;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 
 namespace Tasky.Controllers;
 
 [ApiController]
-public class AuthenticationController : TaskyApiBaseControllerV1
+public class AuthenticationController : AnonymousBaseControllerV1
 {
     private readonly IAuthService _authService;
     private readonly IConfiguration _configuration;
