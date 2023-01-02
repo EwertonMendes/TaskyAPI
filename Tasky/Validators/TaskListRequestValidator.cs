@@ -25,7 +25,7 @@ public class TaskListRequestValidator : AbstractValidator<TaskListRequestDto>
         });
         RuleFor(x => x.CategoryId).MustAsync(async (id, cancelationToken) =>
         {
-            var category = await categoryRepository.GetById(_userId, id);
+            var category = await categoryRepository.GetById(id);
 
             if (category == null)
                 throw new NotFoundException($"A Category with id {id} not found");

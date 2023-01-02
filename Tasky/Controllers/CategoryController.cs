@@ -1,57 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
 using Tasky.Controllers.BaseControllers;
+using Tasky.Dtos.Request.Category;
 
-namespace Tasky.Controllers
+namespace Tasky.Controllers;
+
+[Authorize]
+[ApiController]
+public class CategoryController : AuthorizedBaseControllerV1
 {
-    [Authorize]
-    [ApiController]
-    public class CategoryController : AuthorizedBaseControllerV1
+    private readonly ICategoryService _categoryService;
+
+    public CategoryController(ICategoryService categoryService)
     {
-        private readonly ICategoryService _categoryService;
+        _categoryService = categoryService;
+    }
 
-        public CategoryController(ICategoryService categoryService)
-        {
-            _categoryService = categoryService;
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetAll(int userId)
+    {
+        var allCategories = await _categoryService.ListCategories(userId);
+        return Ok(allCategories);
+    }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int userId)
-        {
-            var allCategories = await _categoryService.ListCategories(userId);
-            return Ok(allCategories);
-        }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int userId, CategoryRequestDto id)
+    {
+        var category = await _categoryService.GetCategoryById(userId, id.CategoryId);
+        return Ok(category);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int userId, int id)
-        {
-            var category = await _categoryService.GetCategoryById(userId, id);
-            return Ok(category);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(int userId, [FromBody] CategoryModificationRequestDto dto)
+    {
+        var response = await _categoryService.CreateCategory(userId, dto);
+        return Ok(response);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CategoryRequestDto dto)
-        {
-            var response = await _categoryService.CreateCategory(dto);
-            return Ok(response);
-        }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int userId, int id, [FromBody] CategoryModificationRequestDto dto)
+    {
+        var updatedCategory = await _categoryService.UpdateCategory(userId, id, dto);
+        return Ok(updatedCategory);
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CategoryRequestDto dto)
-        {
-            var updatedCategory = await _categoryService.UpdateCategory(id, dto);
-            return Ok(updatedCategory);
-        }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteById(int userId, int id)
+    {
+        var wasCategoryDeleted = await _categoryService.DeleteCategory(userId, id);
+        return Ok(wasCategoryDeleted);
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(int userId, int id)
-        {
-            var wasCategoryDeleted = await _categoryService.DeleteCategory(userId, id);
-            return Ok(wasCategoryDeleted);
-
-        }
     }
 }

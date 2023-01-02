@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Tasky.Dtos.Request;
+using Tasky.Dtos.Request.User;
 using Tasky.Interfaces.Repositories;
 using Tasky.Models;
 
@@ -29,7 +29,7 @@ public class UserRepository : IUserRepository
         return await _genericRepository.GetSingleAsync(x => x.Id == id);
     }
 
-    public async Task<User> AddNewUser(UserRequestDto userDto)
+    public async Task<User> AddNewUser(UserModificationRequestDto userDto)
     {
         //var newUser = _mapper.Map<User>(userDto);
         var newUser = new User

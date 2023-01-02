@@ -8,7 +8,7 @@ using Tasky.Mapping;
 using Tasky.Models;
 using Tasky.Repositories;
 using Tasky.Services;
-using Tasky.Validators;
+using Tasky.Validators.Category;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +38,7 @@ builder.Services.AddScoped<ITaskListService, TaskListService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Validators registration
+builder.Services.AddValidatorsFromAssemblyContaining<CategoryModificationRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryRequestValidator>();
 
 builder.Services.AddControllersWithViews()

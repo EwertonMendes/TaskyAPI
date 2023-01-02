@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tasky.Dtos.Request;
+using Tasky.Dtos.Request.User;
 using Tasky.Dtos.Response;
 using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
@@ -17,7 +17,7 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<UserResponseDto> CreateUser(UserRequestDto userDto)
+    public async Task<UserResponseDto> CreateUser(UserModificationRequestDto userDto)
     {
         var createdUser = await _repository.AddNewUser(userDto);
         return _mapper.Map<UserResponseDto>(createdUser);

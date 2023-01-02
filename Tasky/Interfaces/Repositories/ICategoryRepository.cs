@@ -1,13 +1,14 @@
-﻿using Tasky.Dtos.Request;
+﻿using Tasky.Dtos.Request.Category;
 using Tasky.Models;
 
 namespace Tasky.Interfaces.Repositories;
 
 public interface ICategoryRepository
 {
-    Task<Category?> GetById(int userId, int id);
-    Task<IAsyncEnumerable<Category>> GetAllCategories(int userId);
-    Task<Category> AddNewCategory(CategoryRequestDto categoryDto);
-    Task<Category> UpdateCategory(CategoryRequestDto categoryDto, int id);
-    Task<bool> RemoveCategory(int userId, int id);
+    Task<Category?> GetByIdByUser(int userId, int id);
+    Task<Category?> GetById(int id);
+    Task<IAsyncEnumerable<Category>> GetAllCategoriesForUser(int userId);
+    Task<Category> AddCategoryByUser(int userId, CategoryModificationRequestDto categoryDto);
+    Task<Category> UpdateCategoryByUser(int userId, CategoryModificationRequestDto categoryDto, int id);
+    Task<bool> RemoveCategoryByUser(int userId, int id);
 }

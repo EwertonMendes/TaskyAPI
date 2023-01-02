@@ -1,6 +1,6 @@
-﻿namespace Tasky.Dtos.Request;
+﻿namespace Tasky.Dtos.Request.User;
 
-public class UserRequestDto
+public class UserModificationRequestDto
 {
     public string UserName { get; set; }
     public string Email { get; set; }
