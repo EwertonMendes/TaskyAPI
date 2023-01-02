@@ -8,8 +8,8 @@ using Tasky.Utilities;
 namespace Tasky.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    protected readonly TaskyContext _context;
-    protected readonly DbSet<T> _DbSet;
+    internal TaskyContext _context;
+    internal DbSet<T> _DbSet;
 
     public GenericRepository(TaskyContext context)
     {
@@ -17,18 +17,27 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _DbSet = context.Set<T>();
     }
 
-    public async Task<T> Add(T entity)
+    public async Task<T> Add(T entity, params Expression<Func<T, object>>[] includes)
     {
-        var newRecord = _DbSet.Add(entity).Entity;
+        //TODO: Improve this part to not call the database without a reason
+        _DbSet.Includes(includes).ToList();
+
+        var newRecord = _context.Set<T>().Add(entity);
+        var addedEntity = newRecord.Entity;
+
         await _context.SaveChangesAsync();
 
-        return newRecord;
+        return addedEntity;
     }
 
-    public async Task<T> Update(T entity)
+    public async Task<T> Update(T entity, params Expression<Func<T, object>>[] includes)
     {
+        //TODO: Improve this part to not call the database without a reason
+        _DbSet.Includes(includes).ToList();
+
         var updatedRecord = _DbSet.Update(entity).Entity;
         await _context.SaveChangesAsync();
+
         return updatedRecord;
     }
 
@@ -46,12 +55,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate) 
         => await _DbSet.SingleOrDefaultAsync(predicate);
 
-    public async Task<IAsyncEnumerable<T>> GetAll() => _DbSet.AsAsyncEnumerable();
-
-    public async Task<IAsyncEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)
-    {
-        return _DbSet.Includes(includes).AsAsyncEnumerable();
-    }
+    public async Task<IAsyncEnumerable<T>> GetAll(Expression<Func<T, bool>> filter = null, 
+        params Expression<Func<T, object>>[] includes) 
+        => _DbSet.Includes(includes).Where(filter).AsAsyncEnumerable();
+    
 
     public async Task<T?> GetById(int id)
     {
@@ -70,8 +77,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public Task<T?> FindBy(Expression<Func<T, bool>> expression)
+    public Task<T?> FindBy(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
     {
-        return _DbSet.FirstOrDefaultAsync(expression);
+        return _DbSet.Includes(includes).FirstOrDefaultAsync(expression);
     }
 }

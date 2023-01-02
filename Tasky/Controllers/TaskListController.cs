@@ -1,54 +1,53 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasky.Controllers.BaseControllers;
-using Tasky.Dtos.Request;
+using Tasky.Dtos.Request.TaskList;
 using Tasky.Interfaces.Services;
 
-namespace Tasky.Controllers
+namespace Tasky.Controllers;
+
+[Authorize]
+[ApiController]
+public class TaskListController : AuthorizedBaseControllerV1
 {
-    [Authorize]
-    [ApiController]
-    public class TaskListController : AuthorizedBaseControllerV1
+    public readonly ITaskListService _taskListService;
+    public TaskListController(ITaskListService taskListService)
     {
-        public readonly ITaskListService _taskListService;
-        public TaskListController(ITaskListService taskListService)
-        {
-            _taskListService = taskListService;
-        }
+        _taskListService = taskListService;
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var response = await _taskListService.GetAllLists();
-            return Ok(response);
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetAll(int userId)
+    {
+        var response = await _taskListService.GetAllLists(userId);
+        return Ok(response);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var response = await _taskListService.GetTaskListById(id);
-            return Ok(response);
-        }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int userId, int id)
+    {
+        var response = await _taskListService.GetTaskListById(userId, id);
+        return Ok(response);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TaskListRequestDto dto)
-        {
-            var response = await _taskListService.CreateTaskList(dto);
-            return Ok(response);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(int userId, [FromBody] TaskListModificationRequestDto dto)
+    {
+        var response = await _taskListService.CreateTaskList(userId, dto);
+        return Ok(response);
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TaskListRequestDto dto)
-        {
-            var response = await _taskListService.UpdateTaskList(id, dto);
-            return Ok(response);
-        }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int userId, int id, [FromBody] TaskListModificationRequestDto dto)
+    {
+        var response = await _taskListService.UpdateTaskList(userId, id, dto);
+        return Ok(response);
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(int id)
-        {
-            var response = await _taskListService.DeleteTaskList(id);
-            return Ok(response);
-        }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteById(int userId, int id)
+    {
+        var response = await _taskListService.DeleteTaskList(userId, id);
+        return Ok(response);
     }
 }

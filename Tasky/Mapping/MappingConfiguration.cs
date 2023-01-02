@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Tasky.Dtos.Request;
 using Tasky.Dtos.Request.Category;
+using Tasky.Dtos.Request.TaskList;
 using Tasky.Dtos.Request.User;
 using Tasky.Dtos.Response;
 using Tasky.Models;
@@ -22,8 +22,10 @@ public class MappingConfiguration : Profile
         CreateMap<TaskList, TaskListResponseDto>()
             .ReverseMap();
 
-        CreateMap<TaskList, TaskListRequestDto>()
-            .ReverseMap();
+        CreateMap<TaskList, TaskListModificationRequestDto>();
+
+        CreateMap<TaskListModificationRequestDto, TaskList>().ForMember(dest => dest.UserId,
+            opt => opt.Ignore());
 
         CreateMap<User, UserModificationRequestDto>()
             .ReverseMap();

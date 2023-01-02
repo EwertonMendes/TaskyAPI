@@ -25,9 +25,9 @@ public class CategoryController : AuthorizedBaseControllerV1
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int userId, CategoryRequestDto id)
+    public async Task<IActionResult> GetById(int userId, int id)
     {
-        var category = await _categoryService.GetCategoryById(userId, id.CategoryId);
+        var category = await _categoryService.GetCategoryById(userId, id);
         return Ok(category);
     }
 
