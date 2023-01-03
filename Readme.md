@@ -10,15 +10,15 @@ There are 2 ways to run this project. Using Docker Compose (recommended) or prov
 * Using Docker Compose:
     - Install docker and docker compose on your machine.
     - Using Visual Studio: Select "docker-compose" as the startup project and then click run.
-    - Using command line: go to the application folder and type the command ```"docker-compose up"``` without the quotation marks, and hit enter.
+    - Using command line: go to the application folder and type the command ```docker-compose up``` and hit enter.
 
 * Using appsettings.json file:
     - First you have to get your SQL Server instance up and runnning, you can install it on your machine or even create a docker container for the database only.
-    - Go to appsettings.json file and change ```"DB_HOST"``` value with your database IP Address, ```"DB_NAME"``` with your database name (usually "tasky") and ```"DB_SA_PASSWORD"``` with the password for SA user you specified on your database.
+    - Go to appsettings.json file and change ```DB_HOST``` value with your database IP Address, ```DB_NAME``` with your database name (usually "tasky") and ```DB_SA_PASSWORD``` with the password for SA user you specified on your database.
     - Set "Tasky" project as the statup project.
-    - Click run or use the command ```"dotnet run"```.
+    - Click run or use the command ```dotnet run```.
 
-Then you should be able to use the application endpoints. This app uses Swagger that provides us a nice interface to use and test our application endpoints. When your app is up and running, to reach swagger page, you have to add ```/swagger``` or ```/swagger/index.html``` path into your browser. The entire path should be something like this: ```https://localhost:7113/swagger/index.html```.
+Then you should be able to use the application endpoints. This app uses Swagger that provides us a nice interface to use and test our application endpoints. When your app is up and running, to reach swagger page, you have to add ```/swagger``` or ```/swagger/index.html``` path into your browser. The entire path should be something like this: ```https://localhost:8001/swagger/index.html```.
 
 Alternatively you can use another tool to test the API endpoints like Postman.
 
