@@ -16,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerWithAuth();
+builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder =>
+{
+    builder.WithOrigins("http://localhost:8001")
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+}));
 
 builder.Services.AddCustomAuthentication(builder);
 
@@ -70,5 +76,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.AddGlobalErrorHandler();
+
+app.UseCors("MyPolicy");
 
 app.Run();
