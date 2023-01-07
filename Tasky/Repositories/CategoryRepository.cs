@@ -42,7 +42,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<bool> RemoveCategoryByUser(int userId, int id)
     {
-        var category = await _genericRepository.FindBy(c => c.UserId == userId && c.Id == id);
+        var category = await GetByIdByUser(userId, id);
 
         if (category == null) return false;
 
@@ -53,7 +53,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> UpdateCategoryByUser(int userId, CategoryModificationRequestDto categoryDto, int id)
     {
-        var category = await _genericRepository.FindBy(c => c.UserId == userId && c.Id == id);
+        var category = await GetByIdByUser(userId, id);
 
         if (category == null) return null;
 
