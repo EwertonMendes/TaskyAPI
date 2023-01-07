@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Tasky.Exceptions;
 using Tasky.Interfaces.Repositories;
 using Tasky.Interfaces.Services;
 using Tasky.Models;
@@ -16,14 +17,15 @@ public class AuthService : IAuthService
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<bool> ValidateCredentials(string email, string password)
+    public async Task<User> ValidateCredentials(string email, string password)
     {
         var user = await _userRepository.GetByEmailAsync(email);
-        if (user == null) return false;
+
+        if (user == null) throw new NotFoundException("Email or Password are wrong");
 
         if (_passwordHasher.VerifyHashedPassword(user, user.PassworHash, password) == PasswordVerificationResult.Failed) 
-            return false;
+            throw new NotFoundException("Email or Password are wrong");
 
-        return true;
+        return user;
     }
 }

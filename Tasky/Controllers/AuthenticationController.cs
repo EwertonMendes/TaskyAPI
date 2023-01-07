@@ -6,6 +6,7 @@ using System.Text;
 using Tasky.Controllers.BaseControllers;
 using Tasky.Dtos.Request;
 using Tasky.Interfaces.Services;
+using Tasky.Models;
 
 namespace Tasky.Controllers;
 
@@ -24,15 +25,13 @@ public class AuthenticationController : AnonymousBaseControllerV1
     [HttpPost]
     public async Task<ActionResult<string>> Login(LoginRequestDto loginDto)
     {
-        var isValid = await _authService.ValidateCredentials(loginDto.Email, loginDto.Password);
-        if (!isValid)
-        {
-            return Unauthorized();
-        }
+        var authenticatedUser = await _authService.ValidateCredentials(loginDto.Email, loginDto.Password);
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, loginDto.Email),
+            new Claim(ClaimTypes.Name, authenticatedUser.Name),
+            new Claim(ClaimTypes.Email, authenticatedUser.Email),
+            new Claim(ClaimTypes.Role, authenticatedUser.Role)
         };
 
         var issuer = _configuration.GetValue<string>("Jwt:Issuer");

@@ -46,6 +46,11 @@ public class GlobalExceptionHandlerMiddleware
             status = HttpStatusCode.NotFound;
         }
 
+        if(exceptionType == typeof(UnauthorizedException))
+        {
+            status = HttpStatusCode.Unauthorized;
+        }
+
         if (exceptionType == typeof(ValidationException))
         {
             var validationException = ex as ValidationException;

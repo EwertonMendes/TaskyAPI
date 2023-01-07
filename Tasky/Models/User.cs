@@ -25,6 +25,10 @@ public class User : IModel
     [Required]
     public string PassworHash { get; set; }
 
+    [Column("role")]
+    [Required]
+    public string Role { get; set; }
+
     public List<Category> Categories { get; set; } = new();
 
     public List<TaskList> TaskLists { get; set; } = new();

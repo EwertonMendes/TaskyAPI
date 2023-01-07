@@ -1,6 +1,8 @@
-﻿namespace Tasky.Interfaces.Services;
+﻿using Tasky.Models;
+
+namespace Tasky.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<bool> ValidateCredentials(string email, string password);
+    Task<User> ValidateCredentials(string email, string password);
 }

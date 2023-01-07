@@ -36,7 +36,8 @@ public class UserRepository : IUserRepository
         {
             Name = userDto.UserName,
             Email = userDto.Email,
-            PassworHash = _passwordHasher.HashPassword(null, userDto.Password)
+            PassworHash = _passwordHasher.HashPassword(null, userDto.Password),
+            Role = userDto.Role
         };
 
         return await _genericRepository.Add(newUser);
