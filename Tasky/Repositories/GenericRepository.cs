@@ -19,26 +19,33 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<T> Add(T entity, params Expression<Func<T, object>>[] includes)
     {
-        //TODO: Improve this part to not call the database without a reason
-        _DbSet.Includes(includes).ToList();
-
-        var newRecord = _context.Set<T>().Add(entity);
-        var addedEntity = newRecord.Entity;
-
+        _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
 
-        return addedEntity;
+        var entry = _context.Entry(entity);
+
+        foreach (var include in includes)
+        {
+            
+            entry.Reference(include).Load();
+        }
+
+        return entity;
     }
 
     public async Task<T> Update(T entity, params Expression<Func<T, object>>[] includes)
     {
-        //TODO: Improve this part to not call the database without a reason
-        _DbSet.Includes(includes).ToList();
-
-        var updatedRecord = _DbSet.Update(entity).Entity;
+        _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
 
-        return updatedRecord;
+        var entry = _context.Entry(entity);
+
+        foreach (var include in includes)
+        {
+            entry.Reference(include).Load();
+        }
+
+        return entity;
     }
 
     public async Task<IEnumerable<T>> Where(Expression<Func<T, bool>> filter = null)
